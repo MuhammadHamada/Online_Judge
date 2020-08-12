@@ -10,6 +10,14 @@ def create_app(test_config=None):
   setup_db(app)
   CORS(app)
 
+  @app.after_request
+  def after_request(response):
+    response.headers.add(
+        'Access-Control-Allow-Headers',
+        'Content-Type,Authorization,true')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE')
+    return response
+
   @app.route('/')
   def welcome():
     return "Welcome to Online Judge Backend!!"
@@ -31,10 +39,24 @@ def create_app(test_config=None):
   @app.route('/users', methods=['POST'])
   def create_user():
 
-    return None
+    try:
+        handle = request.get_json()['handle']
+        rating = request.get_json()['rating']
+        level = request.get_json()['level']
+
+        user = User(handle=handle, rating=rating, level=level)
+        user.insert()
+
+        return jsonify({
+            "success": True,
+            "user_id": user.id
+        })
+
+    except BaseException:
+            abort(422)
   
   # update user's information
-  @app.route('/users', methods=['PATCH'])
+  @app.route('/users/<int:user_id>', methods=['PATCH'])
   def update_user():
 
     return None
@@ -62,7 +84,21 @@ def create_app(test_config=None):
   @app.route('/contests', methods=['POST'])
   def create_contest():
 
-    return None
+    try:
+        name = request.get_json()['name']
+        divison = request.get_json()['divison']
+        time = request.get_json()['time']
+
+        contest = Contest(name=name, divison=divison, time=time)
+        contest.insert()
+
+        return jsonify({
+            "success": True,
+            "contest_id": contest.id
+        })
+
+    except BaseException:
+            abort(422)
 
   # update a contest's information
   @app.route('/contests/<int:contest_id>', methods=['PATCH'])
@@ -121,7 +157,22 @@ def create_app(test_config=None):
   @app.route('/problems', methods=['POST'])
   def create_problem():
 
-    return None
+    try:
+        name = request.get_json()['name']
+        difficulty = request.get_json()['difficulty']
+        text = request.get_json()['text']
+        contest_id = request.get_json()['contest_id']
+
+        problem = Problem(name=name, difficulty=difficulty, text=text, contest_id=contest_id)
+        problem.insert()
+
+        return jsonify({
+            "success": True,
+            "problem_id": problem.id
+        })
+
+    except BaseException:
+            abort(422)
   
   # delete a problem
   @app.route('/problems/<int:problem_id>', methods=['DELETE'])
@@ -157,10 +208,26 @@ def create_app(test_config=None):
     })
 
   # create a submission of a problem (with id = problem_id)
-  @app.route('/submissions/<int:problem_id>', methods=['POST'])
-  def create_submission(problem_id):
+  @app.route('/submissions', methods=['POST'])
+  def create_submission():
 
-    return None
+    try:
+        code = request.get_json()['code']
+        verdict = request.get_json()['verdict']
+        user_id = request.get_json()['user_id']
+        problem_id = request.get_json()['problem_id']
+
+        submission = Submission(code=code, verdict=verdict, user_id=user_id, problem_id=problem_id)
+        submission.insert()
+
+        return jsonify({
+            "success": True,
+            "submission_id": submission.id
+        })
+
+    except BaseException as e:
+            print(e)
+            abort(422)
 
   # get all participations in all contests
   @app.route('/participations', methods=['GET'])
