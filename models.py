@@ -106,6 +106,7 @@ class Solution(db.Model, Table):
     __tablename__ = 'Solution'
 
     id = Column(db.Integer, primary_key=True)
+    code = Column(db.String, nullable=False)
     verdict = Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
     problem_id = db.Column(db.Integer, db.ForeignKey('Problem.id'), nullable=False)
