@@ -37,10 +37,10 @@ class User(db.Model, Table):
     __tablename__ = 'User'
 
     id = Column(db.Integer, primary_key=True)
-    handle = Column(db.String, nullable=False)
+    handle = Column(db.String, unique=True, nullable=False)
     rating = Column(db.Integer, default=1400, nullable=False)
     level = Column(db.String, default="specialist", nullable=False)
-    solutions = db.relationship('Solution', backref='user', lazy=True, cascade="all, delete")
+    submissions = db.relationship('Submission', backref='user', lazy=True, cascade="all, delete")
     participations = db.relationship('Participate', backref='user', lazy=True, cascade="all, delete")
 
     def __init__(self, handle, rating, level):
@@ -59,13 +59,13 @@ class Contest(db.Model, Table):
     __tablename__ = 'Contest'
 
     id = Column(db.Integer, primary_key=True)
-    name = Column(db.String, nullable=False)
+    name = Column(db.String, unique=True, nullable=False)
     divison = Column(db.Integer, nullable=False)
     time = Column(db.DateTime, nullable=True)
     problems = db.relationship('Problem', backref='contest', lazy=True, cascade="all, delete")
     participations = db.relationship('Participate', backref='contest', lazy=True, cascade="all, delete")
 
-    def __init__(self, name, divison, time):
+    def __init__(self, name, divison, time=None):
         self.name = name
         self.divison = divison
         self.time = time
@@ -86,7 +86,7 @@ class Problem(db.Model, Table):
     difficulty = Column(db.String, nullable=False)
     text = Column(db.String, nullable=False)
     contest_id = db.Column(db.Integer, db.ForeignKey('Contest.id'), nullable=False)
-    solutions = db.relationship('Solution', backref='problem', lazy=True, cascade="all, delete")
+    submissions = db.relationship('Submission', backref='problem', lazy=True, cascade="all, delete")
 
     def __init__(self, name, difficulty, text, contest_id):
         self.name = name
@@ -102,8 +102,8 @@ class Problem(db.Model, Table):
         'text': self.text,
         'contest_id': self.contest_id}
 
-class Solution(db.Model, Table):
-    __tablename__ = 'Solution'
+class Submission(db.Model, Table):
+    __tablename__ = 'Submission'
 
     id = Column(db.Integer, primary_key=True)
     code = Column(db.String, nullable=False)
@@ -111,7 +111,8 @@ class Solution(db.Model, Table):
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
     problem_id = db.Column(db.Integer, db.ForeignKey('Problem.id'), nullable=False)
 
-    def __init__(self, verdict, user_id, problem_id):
+    def __init__(self, code, verdict, user_id, problem_id):
+        self.code = code
         self.verdict = verdict
         self.user_id = user_id
         self.problem_id = problem_id
