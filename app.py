@@ -57,9 +57,30 @@ def create_app(test_config=None):
   
   # update user's information
   @app.route('/users/<int:user_id>', methods=['PATCH'])
-  def update_user():
+  def update_user(user_id):
 
-    return None
+    try:
+        user = User.query.filter(User.id == user_id).one_or_none()
+        if user is None:
+            abort(404)
+
+        
+        if "handle" in request.get_json():
+            user.handle = request.get_json()['handle']
+        if "rating" in request.get_json():
+            user.rating = request.get_json()['rating']
+        if "level" in request.get_json():
+            user.level = request.get_json()['level']
+
+        user.update()
+
+        return jsonify({
+            "success": True,
+            "user": user.format()
+        })
+
+    except BaseException:
+            abort(422)
 
   # get all contests
   @app.route('/contests', methods=['GET'])
@@ -77,6 +98,8 @@ def create_app(test_config=None):
   # get handles of users in a contest with contest_id
   @app.route('/contests/<int:contest_id>/users', methods=['GET'])
   def get_users_of_contest(contest_id):
+
+    
 
     return None
   
@@ -102,9 +125,30 @@ def create_app(test_config=None):
 
   # update a contest's information
   @app.route('/contests/<int:contest_id>', methods=['PATCH'])
-  def update_contest():
+  def update_contest(contest_id):
 
-    return None
+    try:
+        contest = Contest.query.filter(Contest.id == contest_id).one_or_none()
+        if contest is None:
+            abort(404)
+
+        
+        if "name" in request.get_json():
+            contest.name = request.get_json()['name']
+        if "divison" in request.get_json():
+            contest.divison = request.get_json()['divison']
+        if "time" in request.get_json():
+            contest.time = request.get_json()['time']
+
+        contest.update()
+
+        return jsonify({
+            "success": True,
+            "contest": contest.format()
+        })
+
+    except BaseException:
+            abort(422)
   
   # delete a contest
   @app.route('/contests/<int:contest_id>', methods=['DELETE'])
@@ -217,6 +261,12 @@ def create_app(test_config=None):
         user_id = request.get_json()['user_id']
         problem_id = request.get_json()['problem_id']
 
+        user = User.query.filter(User.id == user_id).one_or_none()
+        contest = Contest.query.filter(Contest.id == contest_id).one_or_none()
+
+        if user is None or contest is None:
+          abort(404)
+
         submission = Submission(code=code, verdict=verdict, user_id=user_id, problem_id=problem_id)
         submission.insert()
 
@@ -225,9 +275,8 @@ def create_app(test_config=None):
             "submission_id": submission.id
         })
 
-    except BaseException as e:
-            print(e)
-            abort(422)
+    except BaseException:
+      abort(422)
 
   # get all participations in all contests
   @app.route('/participations', methods=['GET'])
@@ -245,9 +294,45 @@ def create_app(test_config=None):
   # create a new paticipation in a contest
   @app.route('/participate', methods=['POST'])
   def create_participation():
+    try:
 
-    return None
-  
+      user_id = request.get_json()['user_id']
+      contest_id = request.get_json()['contest_id']
+
+      user = User.query.filter(User.id == user_id).one_or_none()
+      contest = Contest.query.filter(Contest.id == contest_id).one_or_none()
+      
+
+      if user is None or contest is None:
+        print("Not Found")
+        abort(404)
+
+      paticipation = Participate(user_id=user_id, contest_id=contest_id)
+      paticipation.insert()
+
+      return jsonify({
+          "success": True,
+          "paticipation_id": paticipation.id
+      })
+    except BaseException:
+      abort(422)
+
+  @app.errorhandler(404)
+  def not_found(error):
+    return jsonify({
+        "success": False,
+        "error": 404,
+        "message": "resource not found"
+    }), 404
+
+  @app.errorhandler(422)
+  def unprocessable(error):
+    return jsonify({
+        "success": False, 
+        "error": 422,
+        "message": "unprocessable"
+    }), 422
+      
   return app
 
 APP = create_app()
