@@ -99,7 +99,22 @@ def create_app(test_config=None):
   @app.route('/contests/<int:contest_id>/users', methods=['GET'])
   def get_users_of_contest(contest_id):
 
-    
+    try:
+
+      selection = Participate.query.filter(Participate.contest_id == contest_id).all()
+      if len(selection) == 0:
+        abort(404)
+      
+      users = User.query.join(Participate).filter(Participate.contest_id == contest_id).filter(Participate.user_id == User.id).all()
+      handles = [user.handle for user in users]
+
+      return jsonify({
+        'success': True,
+        'handles': handles
+      })
+
+    except BaseException:
+      abort(422)
 
     return None
   
