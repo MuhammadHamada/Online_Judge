@@ -3,6 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import setup_db, User, Contest, Problem, Submission, Participate
+from auth import AuthError, requires_auth
 
 def create_app(test_config=None):
   # create and configure the app
@@ -24,6 +25,7 @@ def create_app(test_config=None):
 
   # get all users
   @app.route('/users', methods=['GET'])
+  @requires_auth('get:users')
   def get_users():
 
     users = User.query.order_by(User.id).all()
@@ -37,6 +39,7 @@ def create_app(test_config=None):
   
   # create new user
   @app.route('/users', methods=['POST'])
+  @requires_auth('post:users')
   def create_user():
 
     try:
@@ -57,10 +60,12 @@ def create_app(test_config=None):
   
   # update user's information
   @app.route('/users/<int:user_id>', methods=['PATCH'])
+  @requires_auth('patch:users')
   def update_user(user_id):
 
     try:
         user = User.query.filter(User.id == user_id).one_or_none()
+        print('user = ', user)
         if user is None:
             abort(404)
 
@@ -79,11 +84,13 @@ def create_app(test_config=None):
             "user": user.format()
         })
 
-    except BaseException:
-            abort(422)
+    except BaseException as e:
+      print('BaseException is ', e)
+      abort(422)
 
   # get all contests
   @app.route('/contests', methods=['GET'])
+  @requires_auth('get:contests')
   def get_contests():
 
     contests = Contest.query.order_by(Contest.id).all()
@@ -97,6 +104,7 @@ def create_app(test_config=None):
   
   # get handles of users in a contest with contest_id
   @app.route('/contests/<int:contest_id>/users', methods=['GET'])
+  @requires_auth('get:contests')
   def get_users_of_contest(contest_id):
 
     try:
@@ -120,6 +128,7 @@ def create_app(test_config=None):
   
   # create new contest
   @app.route('/contests', methods=['POST'])
+  @requires_auth('post:contests')
   def create_contest():
 
     try:
@@ -140,6 +149,7 @@ def create_app(test_config=None):
 
   # update a contest's information
   @app.route('/contests/<int:contest_id>', methods=['PATCH'])
+  @requires_auth('patch:contests')
   def update_contest(contest_id):
 
     try:
@@ -167,6 +177,7 @@ def create_app(test_config=None):
   
   # delete a contest
   @app.route('/contests/<int:contest_id>', methods=['DELETE'])
+  @requires_auth('delete:contests')
   def delete_contest(contest_id):
     
     try:
@@ -187,6 +198,7 @@ def create_app(test_config=None):
 
   # get all problems
   @app.route('/problems', methods=['GET'])
+  @requires_auth('get:problems')
   def get_problems():
 
     problems = Problem.query.order_by(Problem.id).all()
@@ -200,6 +212,7 @@ def create_app(test_config=None):
 
   # get all problems of the contest (with id = contest_id)
   @app.route('/problems/<int:contest_id>', methods=['GET'])
+  @requires_auth('get:problems')
   def get_problems_of_contest(contest_id):
 
     problems = Problem.query.filter(Problem.contest_id == contest_id).order_by(Problem.id).all()
@@ -214,6 +227,7 @@ def create_app(test_config=None):
 
   # create new problem
   @app.route('/problems', methods=['POST'])
+  @requires_auth('post:problems')
   def create_problem():
 
     try:
@@ -235,6 +249,7 @@ def create_app(test_config=None):
   
   # delete a problem
   @app.route('/problems/<int:problem_id>', methods=['DELETE'])
+  @requires_auth('delete:problems')
   def delete_problem(problem_id):
 
     try:
@@ -251,10 +266,25 @@ def create_app(test_config=None):
 
     except BaseException:
             abort(422)
+  
+  # get all submissions on the online judge
+  @app.route('/submissions', methods=['GET'])
+  @requires_auth('get:submissions')
+  def get_all_submissions():
+
+    submissions = Submission.query.order_by(Submission.id).all()
+    all_submissions = [submission.format() for submission in submissions]
+
+    return jsonify ({
+      'success': True,
+      'submissions' : all_submissions,
+      'total_submissions' : len(all_submissions)
+    })
 
   # get a submission of a problem (with id = problem_id)
   @app.route('/submissions/<int:problem_id>', methods=['GET'])
-  def get_submission(problem_id):
+  @requires_auth('get:submissions')
+  def get_problem_submissions(problem_id):
 
     submissions = Submission.query.filter(Submission.problem_id == problem_id).order_by(Submission.id).all()
     all_problem_submission = [submission.format() for submission in submissions]
@@ -268,6 +298,7 @@ def create_app(test_config=None):
 
   # create a submission of a problem (with id = problem_id)
   @app.route('/submissions', methods=['POST'])
+  @requires_auth('post:submissions')
   def create_submission():
 
     try:
@@ -295,6 +326,7 @@ def create_app(test_config=None):
 
   # get all participations in all contests
   @app.route('/participations', methods=['GET'])
+  @requires_auth('get:participations')
   def get_participations():
 
     participations = Participate.query.order_by(Participate.id).all()
@@ -308,6 +340,7 @@ def create_app(test_config=None):
 
   # create a new paticipation in a contest
   @app.route('/participate', methods=['POST'])
+  @requires_auth('post:participations')
   def create_participation():
     try:
 
@@ -347,6 +380,10 @@ def create_app(test_config=None):
         "error": 422,
         "message": "unprocessable"
     }), 422
+  
+  @app.errorhandler(AuthError)
+  def auth_error(e):
+    return jsonify(e.error), e.status_code
       
   return app
 
