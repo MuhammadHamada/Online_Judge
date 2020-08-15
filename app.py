@@ -249,7 +249,7 @@ def create_app(test_config=None):
     })
 
   # get all problems of the contest (with id = contest_id)
-  @app.route('/problems/<int:contest_id>', methods=['GET'])
+  @app.route('/contests/<int:contest_id>/problems', methods=['GET'])
   @requires_auth('get:problems')
   def get_problems_of_contest(contest_id):
 

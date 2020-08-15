@@ -300,6 +300,18 @@ class OnlineJudgeTestCase(unittest.TestCase):
         self.client().delete('/contests/' + str(contest_id), headers = self.admin) 
 
         self.assertEqual(res.status_code, 403)
+    
+    def test_get_contest_problems(self):
+
+        min_id = db.session.query(func.min(Contest.id)).scalar()
+        res = self.client().get('/contests/' + str(min_id) + '/problems', headers = self.contestant)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['contest_id'], min_id)
+        self.assertTrue(data['problems'])
+        self.assertTrue(data['total_problems'])
 
 
     ### ---------- Problems Testing ------------------------
@@ -309,19 +321,6 @@ class OnlineJudgeTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['problems'])
-        self.assertTrue(data['total_problems'])
-    
-
-    def test_get_contest_problems(self):
-
-        min_id = db.session.query(func.min(Contest.id)).scalar()
-        res = self.client().get('/problems/' + str(min_id), headers = self.contestant)
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertEqual(data['contest_id'], min_id)
         self.assertTrue(data['problems'])
         self.assertTrue(data['total_problems'])
 
