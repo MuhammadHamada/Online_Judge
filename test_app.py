@@ -2,9 +2,9 @@ import os
 import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
-
+from sqlalchemy.sql.expression import func
 from app import create_app
-from models import setup_db, User, Contest, Problem, Submission, Participate, database_path
+from models import setup_db, User, Contest, Problem, Submission, Participate, database_path, db
 
 from config import ADMIN_TOKEN, CONTESTANT_TOKEN
 
@@ -170,7 +170,9 @@ class OnlineJudgeTestCase(unittest.TestCase):
         self.assertTrue(data['total_contests'])
 
     def test_get_users_of_contest(self):
-        res = self.client().get('/contests/1/users', headers = self.contestant)
+        
+        min_id = db.session.query(func.min(Contest.id)).scalar()
+        res = self.client().get('/contests/' + str(min_id) + '/users', headers = self.contestant)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -275,8 +277,9 @@ class OnlineJudgeTestCase(unittest.TestCase):
         self.assertEqual(data['deleted'],contest_id)
     
     def test_admin_cannot_delete_not_exist_contest(self):
-        
-        res = self.client().delete('/contests/100000', headers = self.admin)
+
+        max_id = db.session.query(func.max(Contest.id)).scalar() + 10
+        res = self.client().delete('/contests/' + str(max_id), headers = self.admin)
         data = json.loads(res.data) 
 
         self.assertEqual(res.status_code, 404)
@@ -311,12 +314,14 @@ class OnlineJudgeTestCase(unittest.TestCase):
     
 
     def test_get_contest_problems(self):
-        res = self.client().get('/problems/1', headers = self.contestant)
+
+        min_id = db.session.query(func.min(Contest.id)).scalar()
+        res = self.client().get('/problems/' + str(min_id), headers = self.contestant)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['contest_id'], 1)
+        self.assertEqual(data['contest_id'], min_id)
         self.assertTrue(data['problems'])
         self.assertTrue(data['total_problems'])
 
@@ -385,7 +390,8 @@ class OnlineJudgeTestCase(unittest.TestCase):
 
     def test_admin_cannot_delete_not_exist_problem(self):
         
-        res = self.client().delete('/problems/100000', headers = self.admin)
+        max_id = db.session.query(func.max(Problem.id)).scalar() + 10
+        res = self.client().delete('/problems/' + str(max_id), headers = self.admin)
         data = json.loads(res.data) 
 
         self.assertEqual(res.status_code, 404)
@@ -433,12 +439,13 @@ class OnlineJudgeTestCase(unittest.TestCase):
     
     def test_get_problem_submissions(self):
 
-        res = self.client().get('/submissions/1', headers = self.contestant)
+        min_id = db.session.query(func.min(Problem.id)).scalar()
+        res = self.client().get('/submissions/' + str(min_id), headers = self.contestant)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['problem_id'],1)
+        self.assertEqual(data['problem_id'],min_id)
         self.assertTrue(data['submissions'])
         self.assertTrue(data['total_submissions'])
     
