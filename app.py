@@ -63,12 +63,12 @@ def create_app(test_config=None):
   @requires_auth('patch:users')
   def update_user(user_id):
 
+    flag = False
     try:
         user = User.query.filter(User.id == user_id).one_or_none()
-        print('user = ', user)
         if user is None:
-            abort(404)
-
+          flag = True
+          abort(404)
         
         if "handle" in request.get_json():
             user.handle = request.get_json()['handle']
@@ -84,9 +84,35 @@ def create_app(test_config=None):
             "user": user.format()
         })
 
-    except BaseException as e:
-      print('BaseException is ', e)
-      abort(422)
+    except BaseException:
+      if flag :
+        abort(404)
+      else:
+        abort(422)
+    
+  # delete a user
+  @app.route('/users/<int:user_id>', methods=['DELETE'])
+  @requires_auth('delete:contestants')
+  def delete_user(user_id):
+    
+    flag = False
+    try:
+        user = User.query.filter(User.id == user_id).one_or_none()
+        if user is None:
+          flag = True
+          abort(404)
+
+        user.delete()
+        return jsonify({
+            "success": True,
+            "deleted": user_id
+        })
+
+    except BaseException:
+      if flag :
+        abort(404)
+      else:
+        abort(422)
 
   # get all contests
   @app.route('/contests', methods=['GET'])
@@ -107,10 +133,12 @@ def create_app(test_config=None):
   @requires_auth('get:contests')
   def get_users_of_contest(contest_id):
 
+    flag = False
     try:
 
       selection = Participate.query.filter(Participate.contest_id == contest_id).all()
       if len(selection) == 0:
+        flag = True
         abort(404)
       
       users = User.query.join(Participate).filter(Participate.contest_id == contest_id).filter(Participate.user_id == User.id).all()
@@ -122,9 +150,10 @@ def create_app(test_config=None):
       })
 
     except BaseException:
-      abort(422)
-
-    return None
+      if flag:
+        abort(404)
+      else:
+        abort(422)
   
   # create new contest
   @app.route('/contests', methods=['POST'])
@@ -152,11 +181,12 @@ def create_app(test_config=None):
   @requires_auth('patch:contests')
   def update_contest(contest_id):
 
+    flag = False
     try:
         contest = Contest.query.filter(Contest.id == contest_id).one_or_none()
         if contest is None:
-            abort(404)
-
+          flag = True
+          abort(404)
         
         if "name" in request.get_json():
             contest.name = request.get_json()['name']
@@ -173,16 +203,21 @@ def create_app(test_config=None):
         })
 
     except BaseException:
-            abort(422)
+      if flag:
+        abort(404)
+      else:
+        abort(422)
   
   # delete a contest
   @app.route('/contests/<int:contest_id>', methods=['DELETE'])
   @requires_auth('delete:contests')
   def delete_contest(contest_id):
     
+    flag = False
     try:
-        contest = Contest.query.filter(Contest.id == contest_id).one_or_none()
-        if contest is None:
+        contest = Contest.query.get(contest_id)
+        if contest == None:
+            flag = True
             abort(404)
 
         contest.delete()
@@ -193,7 +228,10 @@ def create_app(test_config=None):
         })
 
     except BaseException:
-            abort(422)
+      if flag:
+        abort(404)
+      else:
+        abort(422)
   
 
   # get all problems
@@ -252,10 +290,12 @@ def create_app(test_config=None):
   @requires_auth('delete:problems')
   def delete_problem(problem_id):
 
+    flag = False
     try:
         problem = Problem.query.filter(Problem.id == problem_id).one_or_none()
         if problem is None:
-            abort(404)
+          flag = True
+          abort(404)
 
         problem.delete()
 
@@ -265,7 +305,10 @@ def create_app(test_config=None):
         })
 
     except BaseException:
-            abort(422)
+      if flag:
+        abort(404)
+      else:
+        abort(422)
   
   # get all submissions on the online judge
   @app.route('/submissions', methods=['GET'])
@@ -301,6 +344,7 @@ def create_app(test_config=None):
   @requires_auth('post:submissions')
   def create_submission():
 
+    flag = False
     try:
         code = request.get_json()['code']
         verdict = request.get_json()['verdict']
@@ -308,9 +352,10 @@ def create_app(test_config=None):
         problem_id = request.get_json()['problem_id']
 
         user = User.query.filter(User.id == user_id).one_or_none()
-        contest = Contest.query.filter(Contest.id == contest_id).one_or_none()
+        problem = Problem.query.filter(Problem.id == problem_id).one_or_none()
 
-        if user is None or contest is None:
+        if user is None or problem is None:
+          flag = True
           abort(404)
 
         submission = Submission(code=code, verdict=verdict, user_id=user_id, problem_id=problem_id)
@@ -322,7 +367,10 @@ def create_app(test_config=None):
         })
 
     except BaseException:
-      abort(422)
+      if flag:
+        abort(404)
+      else:
+        abort(422)
 
   # get all participations in all contests
   @app.route('/participations', methods=['GET'])
@@ -342,6 +390,8 @@ def create_app(test_config=None):
   @app.route('/participate', methods=['POST'])
   @requires_auth('post:participations')
   def create_participation():
+
+    flag = False
     try:
 
       user_id = request.get_json()['user_id']
@@ -352,7 +402,7 @@ def create_app(test_config=None):
       
 
       if user is None or contest is None:
-        print("Not Found")
+        flag = True
         abort(404)
 
       paticipation = Participate(user_id=user_id, contest_id=contest_id)
@@ -363,7 +413,10 @@ def create_app(test_config=None):
           "paticipation_id": paticipation.id
       })
     except BaseException:
-      abort(422)
+      if flag :
+        abort(404)
+      else:
+        abort(422)
 
   @app.errorhandler(404)
   def not_found(error):

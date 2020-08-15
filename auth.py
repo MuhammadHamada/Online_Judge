@@ -1,3 +1,4 @@
+import os
 import json
 from flask import request, _request_ctx_stack
 from functools import wraps
@@ -5,9 +6,17 @@ from jose import jwt
 from urllib.request import urlopen
 
 
-AUTH0_DOMAIN = 'ojudge.us.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'ojudge'
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
+if not AUTH0_DOMAIN:
+    AUTH0_DOMAIN = 'ojudge.us.auth0.com'
+
+ALGORITHMS = os.environ.get('ALGORITHMS')
+if not ALGORITHMS:
+    ALGORITHMS = ['RS256']
+
+API_AUDIENCE = os.environ.get('API_AUDIENCE')
+if not API_AUDIENCE:
+    API_AUDIENCE = 'ojudge'
 
 ## AuthError Exception
 '''

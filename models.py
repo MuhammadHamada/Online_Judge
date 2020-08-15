@@ -4,9 +4,11 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 import json
 
+from config import DATABASE_URL
+
 database_path = os.environ.get('DATABASE_URL')
 if not database_path:
-    database_path = "postgresql://postgres:1234@localhost:5432/online_judge"
+    database_path = DATABASE_URL
 
 db = SQLAlchemy()
 
