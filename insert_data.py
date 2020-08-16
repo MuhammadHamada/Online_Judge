@@ -1,4 +1,4 @@
-from app import APP
+from app import app
 from models import User, Contest, Problem, Submission, Participate
 
 
