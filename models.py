@@ -122,6 +122,7 @@ class Submission(db.Model, Table):
     def format(self):
         return {
         'id': self.id,
+        'code': self.code,
         'verdict': self.verdict,
         'user_id': self.user_id,
         'problem_id': self.problem_id}
