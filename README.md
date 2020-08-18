@@ -6,13 +6,13 @@ Online judge is a simple website that allow programmers to participate in online
 
 ### Online Judge has 2 Roles Contestant and Admin
 
-** Contestant's Role **
+**Contestant's Role**
 - Contestant can get all information of users, contests, problems and participations.
 - Contestant can participate in contests.
 - Contestant can submit to solve problems.
 - Contestant can register to the online judge and create new user.
 
-** Admin's Role **
+**Admin's Role**
 - Admin has all premissions of normal contestants mentioned above.
 - Admin can delete contestants(users).
 - Admin can delete any contest.
@@ -26,5 +26,5 @@ Online judge is a simple website that allow programmers to participate in online
 
 ## Database Design
 
-<img src="/ojudge_databse.PNG" alt="Online_Judge"/>
+![Image of database design](https://drive.google.com/file/d/11iUr4535hJzJdHgL98Tkk7RbEsoIWcQz/view?usp=sharing)
 
