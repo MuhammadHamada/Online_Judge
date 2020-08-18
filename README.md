@@ -26,5 +26,5 @@ Online judge is a simple website that allow programmers to participate in online
 
 ## Database Design
 
-![Image of database design](https://ibb.co/hLR3ryK)
+![Image of database design](https://i.ibb.co/XjZc6bz/ojudge-database.png)
 
