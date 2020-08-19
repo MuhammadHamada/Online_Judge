@@ -28,3 +28,43 @@ Online judge is a simple website that allow programmers to participate in online
 
 ![Image of database design](https://i.ibb.co/XjZc6bz/ojudge-database.png)
 
+## Topics
+
+- The Final Project of the Full stack Nanodegree
+- Database modeling using sqlalchemy (models.py)
+- REST API for CRUD using Flask (app.py)
+- Authentication & Authorization Role based using Auth0 (auth.py)
+- Deployment on Heroku
+- Unit testing using unittest (test_app.py)
+- Enviroment variables encapsulation (Config.py)
+
+## Installing Dependencies
+
+#### Python 3.7
+
+Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
+
+#### PIP Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+## Run the Server
+
+```bash
+python app.py
+```
+
+## Run Testing
+```bash
+python insert_data.py
+python app.py
+.............................
+----------------------------------------------------------------------
+Ran 29 tests in 74.555s
+
+OK
+```
+
+
