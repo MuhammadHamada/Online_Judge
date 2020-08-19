@@ -91,4 +91,4 @@ OK
 
 ## Getting Started
 
-- URL: [a link](https://ojudge.herokuapp.com/)
+- URL: [https://ojudge.herokuapp.com/]
