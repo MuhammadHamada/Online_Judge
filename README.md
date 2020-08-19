@@ -50,6 +50,17 @@ Follow instructions to install the latest version of python for your platform in
 pip install -r requirements.txt
 ```
 
+## Database Setup
+```bash
+python manage.py db init
+python manage.py db migrate
+python manage.py db update
+```
+To insert initial records in the database you must run the server first and open anthor command window and run the following command.
+```bash
+python insert_data.py
+```
+
 ## Run the Server
 
 ```bash
@@ -59,7 +70,7 @@ python app.py
 ## Run Testing
 ```bash
 python insert_data.py
-python app.py
+python test_app.py
 .............................
 ----------------------------------------------------------------------
 Ran 29 tests in 74.555s
