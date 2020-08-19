@@ -169,20 +169,185 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFQUGQ4eTFyNVdsQ0RGZHB3NkNMSCJ9.eyJ
 ```
 
 #### POST /users
+- create new user
+- Request : POST https://ojudge.herokuapp.com/users
+- Request Arguments :
+```
+{
+    "handle": "Momentum",
+    "rating": 1200,
+    "level" : "pupil"
+}
+```
+- Response :
+```
+{
+    "success": true,
+    "user_id": 20
+}
+```
 
 #### PATCH /users/<int:user_id>
+- update the information of a specific user
+- Request : PATCH https://ojudge.herokuapp.com/users/20
+- Request Arguments :
+```
+{
+    "rating": 1600,
+    "level" : "expert"
+}
+```
+- Response :
+```
+{
+    "success": true,
+    "user": {
+        "handle": "Momentum",
+        "id": 20,
+        "level": "expert",
+        "rating": 1600
+    }
+}
+```
 
 #### DELETE /users/<int:user_id>
+- delete a specific user
+- Request : DELETE https://ojudge.herokuapp.com/users/20
+- Request Arguments : None
+- Response :
+```
+{
+    "deleted": 20,
+    "success": true
+}
+```
 
 #### GET /contests
+- get all contests
+- Request : GET https://ojudge.herokuapp.com/contests
+- Request Arguments : None
+- Response :
+```
+{
+    "contests": [
+        {
+            "divison": 1,
+            "id": 11,
+            "name": "Codeforces Round #1",
+            "time": null
+        },
+        {
+            "divison": 1,
+            "id": 12,
+            "name": "Codeforces Round #2",
+            "time": null
+        },
+        {
+            "divison": 2,
+            "id": 13,
+            "name": "Codeforces Round #3",
+            "time": null
+        },
+        {
+            "divison": 3,
+            "id": 14,
+            "name": "Codeforces Round #4",
+            "time": null
+        },
+        {
+            "divison": 2,
+            "id": 15,
+            "name": "Educational Round #1",
+            "time": null
+        },
+        {
+            "divison": 3,
+            "id": 16,
+            "name": "Educational Round #2",
+            "time": null
+        },
+        {
+            "divison": 0,
+            "id": 17,
+            "name": "Global Round #1",
+            "time": null
+        }
+    ],
+    "success": true,
+    "total_contests": 7
+}
+```
 
 #### GET /contests/<int:contest_id>/users
+- get handles of all user participated in a specific contest
+- Request : GET https://ojudge.herokuapp.com/contests/11/users
+- Request Arguments : None
+- Response :
+```
+{
+    "handles": [
+        "hamada",
+        "ahmed"
+    ],
+    "success": true
+}
+```
 
 #### POST /contests
+- create new contest
+- Request : POST https://ojudge.herokuapp.com/contests
+- Request Arguments :
+```
+{
+    "name": "Educational Round #4",
+    "divison": 2 ,
+    "time" : null
+
+}
+```
+- Response :
+```
+{
+    "contest_id": 28,
+    "success": true
+}
+```
 
 #### PATCH /contests/<int:contest_id>
+- update the information of a specific contest
+- Request : PATCH https://ojudge.herokuapp.com/contests/28
+- Request Arguments :
+```
+{
+    "name": "educational Round #4",
+    "divison": 3
+
+}
+```
+- Response :
+```
+{
+    "contest": {
+        "divison": 3,
+        "id": 28,
+        "name": "educational Round #4",
+        "time": null
+    },
+    "success": true
+}
+```
 
 #### DELETE /contests/<int:contest_id>
+- delete a specific contest
+- Request : DELETE https://ojudge.herokuapp.com/contests/28
+- Request Arguments : None
+- Response :
+```
+{
+    "deleted": 28,
+    "success": true
+}
+```
 
 #### GET /problems
 
