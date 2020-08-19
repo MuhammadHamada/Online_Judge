@@ -21,7 +21,6 @@ Online judge is a simple website that allow programmers to participate in online
 - Admin can create problems.
 - Admin can update users' information.
 - Admin can update contests' information.
-- Admin can update problems' information.
 
 
 ## Database Design
@@ -187,7 +186,7 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFQUGQ4eTFyNVdsQ0RGZHB3NkNMSCJ9.eyJ
 }
 ```
 
-#### PATCH /users/<int:user_id>
+#### PATCH /users/<int:user_id>  (Admin Only)
 - update the information of a specific user
 - Request : PATCH https://ojudge.herokuapp.com/users/20
 - Request Arguments :
@@ -210,7 +209,7 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFQUGQ4eTFyNVdsQ0RGZHB3NkNMSCJ9.eyJ
 }
 ```
 
-#### DELETE /users/<int:user_id>
+#### DELETE /users/<int:user_id>  (Admin Only)
 - delete a specific user
 - Request : DELETE https://ojudge.herokuapp.com/users/20
 - Request Arguments : None
@@ -293,7 +292,7 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFQUGQ4eTFyNVdsQ0RGZHB3NkNMSCJ9.eyJ
 }
 ```
 
-#### POST /contests
+#### POST /contests  (Admin Only)
 - create new contest
 - Request : POST https://ojudge.herokuapp.com/contests
 - Request Arguments :
@@ -313,7 +312,7 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFQUGQ4eTFyNVdsQ0RGZHB3NkNMSCJ9.eyJ
 }
 ```
 
-#### PATCH /contests/<int:contest_id>
+#### PATCH /contests/<int:contest_id>  (Admin Only)
 - update the information of a specific contest
 - Request : PATCH https://ojudge.herokuapp.com/contests/28
 - Request Arguments :
@@ -337,7 +336,7 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFQUGQ4eTFyNVdsQ0RGZHB3NkNMSCJ9.eyJ
 }
 ```
 
-#### DELETE /contests/<int:contest_id>
+#### DELETE /contests/<int:contest_id>  (Admin Only)
 - delete a specific contest
 - Request : DELETE https://ojudge.herokuapp.com/contests/28
 - Request Arguments : None
@@ -469,7 +468,7 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFQUGQ4eTFyNVdsQ0RGZHB3NkNMSCJ9.eyJ
 }
 ```
 
-#### POST /problems
+#### POST /problems (Admin Only)
 - create new problem
 - Request : POST https://ojudge.herokuapp.com/problems
 - Request Arguments : 
@@ -489,7 +488,7 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFQUGQ4eTFyNVdsQ0RGZHB3NkNMSCJ9.eyJ
 }
 ```
 
-#### DELETE /problems/<int:problem_id>
+#### DELETE /problems/<int:problem_id> (Admin Only)
 - delete a specific problem
 - Request : DELETE https://ojudge.herokuapp.com/problems/21
 - Request Arguments : None
