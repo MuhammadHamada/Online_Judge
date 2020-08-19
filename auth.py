@@ -18,18 +18,20 @@ API_AUDIENCE = os.environ.get('API_AUDIENCE')
 if not API_AUDIENCE:
     API_AUDIENCE = 'ojudge'
 
-## AuthError Exception
+# AuthError Exception
 '''
 AuthError Exception
 A standardized way to communicate auth failure modes
 '''
+
+
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
 
 
-## Auth Header
+# Auth Header
 def get_token_auth_header():
     """Obtains the Access Token from the Authorization Header
     """
@@ -127,9 +129,9 @@ def verify_decode_jwt(token):
                 'description': 'Unable to parse authentication token.'
             }, 400)
     raise AuthError({
-                'code': 'invalid_header',
+        'code': 'invalid_header',
                 'description': 'Unable to find the appropriate key.'
-            }, 400)
+    }, 400)
 
 
 def requires_auth(permission=''):
