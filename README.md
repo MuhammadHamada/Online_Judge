@@ -125,6 +125,48 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFQUGQ4eTFyNVdsQ0RGZHB3NkNMSCJ9.eyJ
 **All endpoints is tested on Postman**
 
 #### GET /users
+- get the data of all users
+- Request : GET https://ojudge.herokuapp.com/users
+- Request Arguments : None
+- Response :
+```
+{
+    "success": true,
+    "total_users": 5,
+    "users": [
+        {
+            "handle": "hamada",
+            "id": 8,
+            "level": "newbie",
+            "rating": 1056
+        },
+        {
+            "handle": "mohamed",
+            "id": 9,
+            "level": "pupil",
+            "rating": 1201
+        },
+        {
+            "handle": "omar",
+            "id": 10,
+            "level": "specialist",
+            "rating": 1401
+        },
+        {
+            "handle": "ahmed",
+            "id": 11,
+            "level": "expert",
+            "rating": 1660
+        },
+        {
+            "handle": "dawod",
+            "id": 12,
+            "level": "master",
+            "rating": 1200
+        }
+    ]
+}
+```
 
 #### POST /users
 
