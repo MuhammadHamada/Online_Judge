@@ -350,19 +350,411 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFQUGQ4eTFyNVdsQ0RGZHB3NkNMSCJ9.eyJ
 ```
 
 #### GET /problems
+- get all problems
+- Request : GET https://ojudge.herokuapp.com/problems
+- Request Arguments : None
+- Response :
+```
+{
+    "problems": [
+        {
+            "contest_id": 11,
+            "difficulty": "A",
+            "id": 5,
+            "name": "time square",
+            "text": "kkjadfkjabfja"
+        },
+        {
+            "contest_id": 11,
+            "difficulty": "B",
+            "id": 6,
+            "name": "space",
+            "text": "bvksdkbsjbvds"
+        },
+        {
+            "contest_id": 12,
+            "difficulty": "A",
+            "id": 7,
+            "name": "smart car",
+            "text": "adjldnjldanldaj"
+        },
+        {
+            "contest_id": 12,
+            "difficulty": "B",
+            "id": 8,
+            "name": "robot",
+            "text": "adjbljdaldjabjda"
+        },
+        {
+            "contest_id": 12,
+            "difficulty": "C",
+            "id": 9,
+            "name": "holiday",
+            "text": "vkxkvmmkvmvkx"
+        },
+        {
+            "contest_id": 13,
+            "difficulty": "A",
+            "id": 10,
+            "name": "water",
+            "text": "dnnjdns"
+        },
+        {
+            "contest_id": 13,
+            "difficulty": "B",
+            "id": 11,
+            "name": "Oil",
+            "text": "asmccadc"
+        },
+        {
+            "contest_id": 13,
+            "difficulty": "C",
+            "id": 12,
+            "name": "graph",
+            "text": "fjkeef"
+        },
+        {
+            "contest_id": 15,
+            "difficulty": "A",
+            "id": 13,
+            "name": "Black Magic",
+            "text": "adjldnjldanldaj"
+        },
+        {
+            "contest_id": 16,
+            "difficulty": "A",
+            "id": 14,
+            "name": "White door",
+            "text": "adjbljdaldjabjda"
+        },
+        {
+            "contest_id": 17,
+            "difficulty": "A",
+            "id": 15,
+            "name": "station",
+            "text": "vkxkvmmkvmvkx"
+        }
+    ],
+    "success": true,
+    "total_problems": 11
+}
+```
 
 #### GET /contests/<int:contest_id>/problems
+- get all problems of a specific contest
+- Request : GET https://ojudge.herokuapp.com/contests/11/problems
+- Request Arguments : None
+- Response :
+```
+{
+    "contest_id": 11,
+    "problems": [
+        {
+            "contest_id": 11,
+            "difficulty": "A",
+            "id": 5,
+            "name": "time square",
+            "text": "kkjadfkjabfja"
+        },
+        {
+            "contest_id": 11,
+            "difficulty": "B",
+            "id": 6,
+            "name": "space",
+            "text": "bvksdkbsjbvds"
+        }
+    ],
+    "success": true,
+    "total_problems": 2
+}
+```
 
 #### POST /problems
+- create new problem
+- Request : POST https://ojudge.herokuapp.com/problems
+- Request Arguments : 
+```
+{
+    "name" : "Watermelon",
+    "difficulty": "A" ,
+    "text": "sjadnjnadjlnd",
+    "contest_id" : 11
+}
+```
+- Response :
+```
+{
+    "problem_id": 21,
+    "success": true
+}
+```
 
 #### DELETE /problems/<int:problem_id>
+- delete a specific problem
+- Request : DELETE https://ojudge.herokuapp.com/problems/21
+- Request Arguments : None
+- Response :
+```
+{
+    "deleted": 21,
+    "success": true
+}
+```
 
 #### GET /submissions
+- get all submissions
+- Request : GET https://ojudge.herokuapp.com/submissions
+- Request Arguments : None
+- Response :
+```
+{
+    "submissions": [
+        {
+            "code": "djabjfba",
+            "id": 2,
+            "problem_id": 5,
+            "user_id": 8,
+            "verdict": "Wrong Answer"
+        },
+        {
+            "code": "SPKAWEEW",
+            "id": 3,
+            "problem_id": 5,
+            "user_id": 8,
+            "verdict": "TLE"
+        },
+        {
+            "code": "KAJDJDFV",
+            "id": 4,
+            "problem_id": 5,
+            "user_id": 8,
+            "verdict": "Accepted"
+        },
+        {
+            "code": "ADLJDVFV",
+            "id": 5,
+            "problem_id": 6,
+            "user_id": 9,
+            "verdict": "TLE"
+        },
+        {
+            "code": "AJKDFVFV",
+            "id": 6,
+            "problem_id": 7,
+            "user_id": 10,
+            "verdict": "Accepted"
+        },
+        {
+            "code": "sfklfkwr",
+            "id": 7,
+            "problem_id": 8,
+            "user_id": 11,
+            "verdict": "Accepted"
+        },
+        {
+            "code": "sljfwfwr",
+            "id": 8,
+            "problem_id": 9,
+            "user_id": 11,
+            "verdict": "Wrong Answer"
+        },
+        {
+            "code": "sfliffse",
+            "id": 9,
+            "problem_id": 10,
+            "user_id": 11,
+            "verdict": "Accepted"
+        },
+        {
+            "code": "sfljfslj",
+            "id": 10,
+            "problem_id": 11,
+            "user_id": 10,
+            "verdict": "Accepted"
+        },
+        {
+            "code": "qieqeqq",
+            "id": 11,
+            "problem_id": 12,
+            "user_id": 9,
+            "verdict": "Accepted"
+        },
+        {
+            "code": "qlejjeq",
+            "id": 12,
+            "problem_id": 12,
+            "user_id": 12,
+            "verdict": "TLE"
+        },
+        {
+            "code": "qeljeje",
+            "id": 13,
+            "problem_id": 13,
+            "user_id": 12,
+            "verdict": "Accepted"
+        },
+        {
+            "code": "qejlqel",
+            "id": 14,
+            "problem_id": 14,
+            "user_id": 8,
+            "verdict": "Wrong Answer"
+        },
+        {
+            "code": "qekejql",
+            "id": 15,
+            "problem_id": 15,
+            "user_id": 8,
+            "verdict": "Accepted"
+        }
+    ],
+    "success": true,
+    "total_submissions": 14
+}
+```
 
 #### GET /submissions/<int:problem_id>
+- get all submissions of a specific problem
+- Request : GET https://ojudge.herokuapp.com/submissions/5
+- Request Arguments : None
+- Response :
+```
+{
+    "problem_id": 5,
+    "submissions": [
+        {
+            "code": "djabjfba",
+            "id": 2,
+            "problem_id": 5,
+            "user_id": 8,
+            "verdict": "Wrong Answer"
+        },
+        {
+            "code": "SPKAWEEW",
+            "id": 3,
+            "problem_id": 5,
+            "user_id": 8,
+            "verdict": "TLE"
+        },
+        {
+            "code": "KAJDJDFV",
+            "id": 4,
+            "problem_id": 5,
+            "user_id": 8,
+            "verdict": "Accepted"
+        }
+    ],
+    "success": true,
+    "total_submissions": 3
+}
+```
 
 #### POST /submissions
-
+- create a new submission
+- Request : POST https://ojudge.herokuapp.com/submissions
+- Request Arguments : 
+```
+{
+    "code" : "print(hello world)",
+    "verdict": "Accepted" ,
+    "user_id": 8,
+    "problem_id" : 5
+}
+```
+- Response :
+```
+{
+    "submission_id": 17,
+    "success": true
+}
+```
 #### GET /participations
-
+- get all participations
+- Request : GET https://ojudge.herokuapp.com/participations
+- Request Arguments : None
+- Response :
+```
+{
+    "participations": [
+        {
+            "contest_id": 11,
+            "id": 2,
+            "user_id": 8
+        },
+        {
+            "contest_id": 12,
+            "id": 3,
+            "user_id": 8
+        },
+        {
+            "contest_id": 17,
+            "id": 4,
+            "user_id": 8
+        },
+        {
+            "contest_id": 12,
+            "id": 5,
+            "user_id": 9
+        },
+        {
+            "contest_id": 13,
+            "id": 6,
+            "user_id": 9
+        },
+        {
+            "contest_id": 17,
+            "id": 7,
+            "user_id": 9
+        },
+        {
+            "contest_id": 17,
+            "id": 8,
+            "user_id": 10
+        },
+        {
+            "contest_id": 11,
+            "id": 9,
+            "user_id": 11
+        },
+        {
+            "contest_id": 13,
+            "id": 10,
+            "user_id": 11
+        },
+        {
+            "contest_id": 14,
+            "id": 11,
+            "user_id": 11
+        },
+        {
+            "contest_id": 15,
+            "id": 12,
+            "user_id": 11
+        },
+        {
+            "contest_id": 13,
+            "id": 13,
+            "user_id": 12
+        }
+    ],
+    "success": true,
+    "total_participations": 12
+}
+```
 #### POST /participate
+- participate in a specific contest
+- Request : POST https://ojudge.herokuapp.com/participate
+- Request Arguments : 
+```
+{
+    "user_id" : 11,
+    "contest_id" : 17
+}
+```
+- Response :
+```
+{
+    "paticipation_id": 15,
+    "success": true
+}
+```
