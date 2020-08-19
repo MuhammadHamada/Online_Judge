@@ -56,7 +56,7 @@ python manage.py db init
 python manage.py db migrate
 python manage.py db update
 ```
-To insert initial records in the database you must run the server first and open anthor command window and run the following command.
+To insert initial records in the database you must run the server first and open another command window and run the following command.
 ```bash
 python insert_data.py
 ```
@@ -78,4 +78,17 @@ Ran 29 tests in 74.555s
 OK
 ```
 
+## Enviroment variables
+- DATABASE_URL = "postgresql://postgres:1234@localhost:5432/online_judge"
+- AUTH0_DOMAIN = 'ojudge.us.auth0.com'
+- ALGORITHMS = ['RS256']
+- API_AUDIENCE = 'ojudge'
+- ADMIN_TOKEN 
+- CONTESTANT_TOKEN
 
+**Note:** You must update the envioments variables by updating config.py file. I made this file because i'm working on Windows and running setup.sh didn't work.
+
+
+## Getting Started
+
+- URL: [a link](https://ojudge.herokuapp.com/)
