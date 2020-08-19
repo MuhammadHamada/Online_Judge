@@ -88,7 +88,37 @@ OK
 
 **Note:** You must update the envioments variables by updating config.py file. I made this file because i'm working on Windows and running setup.sh didn't work.
 
+## API Reference
 
-## Getting Started
+### Getting Started
 
-- URL: [https://ojudge.herokuapp.com/]
+- Base URL: https://ojudge.herokuapp.com/
+- Authentication: this version of the application require authentication.
+
+### Error handling
+Errors are returned as JSON objects in the following format:
+```
+{
+"success": False, 
+"error": 404,
+"message": "resource not found"
+}
+```
+The API will return 4 error types when request fail:
+```
+- 401 Not Authenticated
+- 403 Not Authorized
+- 404 Resource Not Found
+- 422 Not Processable
+```
+
+### Endpoints
+
+**Note : All endpoints require Access Token**
+Tokens :
+
+**Admin token**
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFQUGQ4eTFyNVdsQ0RGZHB3NkNMSCJ9.eyJpc3MiOiJodHRwczovL29qdWRnZS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWYzNmIxNWNhMWI0MWYwMDY3ODE3YTBjIiwiYXVkIjoib2p1ZGdlIiwiaWF0IjoxNTk3Nzk4OTgxLCJleHAiOjE1OTc4MDYxODEsImF6cCI6IkFpdzJPOXliVUtyWG9jNGRHWVBpM3BGNThsQW9MeGVDIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y29udGVzdGFudHMiLCJkZWxldGU6Y29udGVzdHMiLCJkZWxldGU6cHJvYmxlbXMiLCJnZXQ6Y29udGVzdHMiLCJnZXQ6cGFydGljaXBhdGlvbnMiLCJnZXQ6cHJvYmxlbXMiLCJnZXQ6c3VibWlzc2lvbnMiLCJnZXQ6dXNlcnMiLCJwYXRjaDpjb250ZXN0cyIsInBhdGNoOnByb2JsZW1zIiwicGF0Y2g6dXNlcnMiLCJwb3N0OmNvbnRlc3RzIiwicG9zdDpwYXJ0aWNpcGF0aW9ucyIsInBvc3Q6cHJvYmxlbXMiLCJwb3N0OnN1Ym1pc3Npb25zIiwicG9zdDp1c2VycyJdfQ.LKM-zuMkPgVrZupQwMpgg1aqAQVOZzHIpxxtMay5IY4zkz3230x0nuNmu5bw-Mc8H_CyMAGab8e_iUuYAntWpKX33b38c3KcOnN99tOBvlKFmyBcGtQAFHKItfwAX5HLi-sGYg32fZ-fjC1DkvYzLTRoNYighrIUP0jRz6ekHzSAhigVUycMD_uGPQ4K4uY1hBrvMPyFZcTCuSU4-FR1_doa3VHWWBm2QcJ4RmvsejWiGRmtc4ppcLCC5cFOyChAcnHBkW7mjTP6mxqajtnvZCGLzESbUN1NcoPD08xVr3hmvz7vyTEBOtXjEFDlJ2E5G1CzLaU9MSWLYwP1ifh3Eg
+
+**Contestant token**
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFQUGQ4eTFyNVdsQ0RGZHB3NkNMSCJ9.eyJpc3MiOiJodHRwczovL29qdWRnZS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWYzNmIzMTFhMWI0MWYwMDY3ODE3YTMwIiwiYXVkIjoib2p1ZGdlIiwiaWF0IjoxNTk3Nzk5MDUxLCJleHAiOjE1OTc4MDYyNTEsImF6cCI6IkFpdzJPOXliVUtyWG9jNGRHWVBpM3BGNThsQW9MeGVDIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJnZXQ6Y29udGVzdHMiLCJnZXQ6cGFydGljaXBhdGlvbnMiLCJnZXQ6cHJvYmxlbXMiLCJnZXQ6c3VibWlzc2lvbnMiLCJnZXQ6dXNlcnMiLCJwb3N0OnBhcnRpY2lwYXRpb25zIiwicG9zdDpzdWJtaXNzaW9ucyIsInBvc3Q6dXNlcnMiXX0.c_V2HhJ3heyX_KPNprDuIapkLrqnnhyROQwzwk9flhTKeQUnShyUKCvpLhKvLznYyTcnDTVGSUlpujFnFT5HZpqH-pYiF36zKNyQS2m5jUmTRXJc86pJHQ1MBKpJYB3ZhKxHGQdGXj7Ix97kllgb7B2v_K0YUSjX6iOZ6Gv1-iKLuhQJLA_GKKOL9PfPlaomcaqIlCfIdcQxr8pKksoEI181qUm0TL5i5_ZmSBtqdrb1FsoNVd-1sI0AFBVo9Sby7RCEmY3c_Hztpd_6WsIYqqHFfW-V4ctmrGSg_mtyjVmtCQLdMuDkJU-8FqR1dmAj0sJapJ63ttmFuCacfIhnfg
